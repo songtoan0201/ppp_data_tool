@@ -1,0 +1,35 @@
+# Python
+app/__pycache__/
+*.py[co]
+*.egg-info/
+app/tmp/downloads/
+.venv/
+app/.venv/
+*.sqlite3
+
+# Node.js (frontend)
+ppp-frontend/node_modules/
+ppp-frontend/dist/
+ppp-frontend/build/
+ppp-frontend/.env
+
+# Vite
+ppp-frontend/.vite/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker
+*.env
+docker-compose.yml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
