@@ -24,7 +24,6 @@ yarn-error.log*
 
 # Docker
 *.env
-docker-compose.yml
 
 # OS
 .DS_Store

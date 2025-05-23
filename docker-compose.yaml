@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: Backend-Dockerfile
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/ppp_db
+    volumes:
+      - ./app:/app  # optional for live reload during dev
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ppp_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  frontend:
+      build:
+        context: ./ppp-frontend
+        dockerfile: ../Frontend-Dockerfile
+      container_name: ppp_frontend
+      ports:
+        - "3000:80"
+      depends_on:
+        - db
+        - fastapi
+      restart: always
+volumes:
+  pg_data:
