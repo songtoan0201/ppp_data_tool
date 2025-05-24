@@ -1,0 +1,35 @@
+name: Deploy with Copilot
+
+on:
+  push:
+    branches:
+      - main  # Trigger only on pushes to main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1  # or use: ${{ secrets.AWS_REGION }}
+
+    - name: Install AWS Copilot CLI
+      run: |
+        curl -Lo copilot https://github.com/aws/copilot-cli/releases/latest/download/copilot-linux
+        chmod +x copilot
+        sudo mv copilot /usr/local/bin/copilot
+
+    - name: Deploy Frontend
+      run: |
+        copilot deploy --name frontend --env prod
+
+    - name: Deploy Backend
+      run: |
+        copilot deploy --name backend --env prod
