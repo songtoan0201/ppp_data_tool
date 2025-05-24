@@ -8,7 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
     - name: Checkout repo
       uses: actions/checkout@v3
@@ -25,6 +26,14 @@ jobs:
         curl -Lo copilot-cli https://github.com/aws/copilot-cli/releases/latest/download/copilot-linux
         chmod +x copilot-cli
         sudo mv copilot-cli /usr/local/bin/copilot
+
+    - name: Build Backend Docker image
+      run: |
+        docker build -t backend-test -f Backend-Dockerfile .
+
+    - name: Build Frontend Docker image
+      run: |
+        docker build -t frontend-test -f ppp-frontend/Frontend-Dockerfile ./ppp-frontend
 
     - name: Deploy Frontend
       run: |
