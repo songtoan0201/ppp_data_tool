@@ -50,3 +50,4 @@ network:
 environment:
   variables:
     BACKEND_URL: http://backend.prod.ppp-data-tool.local:8000
+    VITE_API_URL: http://backend.prod.ppp-data-tool.local:8000
