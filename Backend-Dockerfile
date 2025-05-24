@@ -13,14 +13,14 @@ RUN apt-get update && apt-get install -y \
 RUN pip install uv
 
 # Copy dependency files
-COPY app/pyproject.toml app/uv.lock ./
+COPY ppp-backend/pyproject.toml ppp-backend/uv.lock ./
 
 # Install deps using uv
 RUN uv sync
 
 RUN uv run playwright install
 # Copy the app source code
-COPY ./app .
+COPY ./ppp-backend .
 
 EXPOSE 8000
 
