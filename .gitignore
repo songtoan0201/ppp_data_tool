@@ -1,10 +1,10 @@
 # Python
-app/__pycache__/
+ppp-backend/__pycache__/
 *.py[co]
 *.egg-info/
-app/tmp/downloads/
+ppp-backend/tmp/downloads/
 .venv/
-app/.venv/
+ppp-backend/.venv/
 *.sqlite3
 
 # Node.js (frontend)

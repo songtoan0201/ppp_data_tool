@@ -3,8 +3,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 import os
 
 # Load from environment or fallback default
-DATABASE_URL = os.getenv("DATABASE_URL")
-
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:Password123!@getbismart-db-cluster.cluster-ccauumjcjayl.us-west-1.rds.amazonaws.com:5432/postgres")
 # Create SQLAlchemy engine
 engine = create_engine(DATABASE_URL)
 
