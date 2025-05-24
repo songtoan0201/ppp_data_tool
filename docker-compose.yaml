@@ -13,7 +13,7 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/ppp_db
     volumes:
-      - ./app:/app  # optional for live reload during dev
+      - ./ppp-backend:/ppp-backend # optional for live reload during dev
 
   db:
     image: postgres:15
@@ -31,7 +31,7 @@ services:
   frontend:
       build:
         context: ./ppp-frontend
-        dockerfile: ../Frontend-Dockerfile
+        dockerfile: Frontend-Dockerfile
       container_name: ppp_frontend
       ports:
         - "3000:80"
