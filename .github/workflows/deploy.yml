@@ -43,7 +43,7 @@ jobs:
 
     - name: Build and Push Backend Image
       run: |
-        docker build -t $BACKEND_REPO:latest -f Backend-Dockerfile ppp-backend
+        docker build -t $BACKEND_REPO:latest -f Backend-Dockerfile
         docker tag $BACKEND_REPO:latest $ECR_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com/$BACKEND_REPO:latest
         docker push $ECR_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com/$BACKEND_REPO:latest
 
