@@ -8,21 +8,26 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     env:
-      ECR_REGION: ${{ secrets.AWS_REGION }}
-      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      ECR_URI: ${{ secrets.ECR_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
       FRONTEND_REPO: ppp-data-tool/frontend
       BACKEND_REPO: ppp-data-tool/backend
+      COPILOT_ENV: prod
+      COPILOT_APP: ppp-data-tool  # optional: if app name is needed explicitly
+
     steps:
     - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Set up AWS CLI
+    - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1  # or use: ${{ secrets.AWS_REGION }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
     - name: Install AWS Copilot CLI
       run: |
@@ -32,25 +37,25 @@ jobs:
 
     - name: Login to Amazon ECR
       run: |
-        aws ecr get-login-password --region $ECR_REGION | \
-          docker login --username AWS --password-stdin $ECR_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com
+        aws ecr get-login-password --region $AWS_REGION | \
+        docker login --username AWS --password-stdin $ECR_URI
 
     - name: Build and Push Frontend Image
       run: |
         docker build -t $FRONTEND_REPO:latest -f ppp-frontend/Frontend-Dockerfile ppp-frontend
-        docker tag $FRONTEND_REPO:latest $ECR_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com/$FRONTEND_REPO:latest
-        docker push $ECR_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com/$FRONTEND_REPO:latest
+        docker tag $FRONTEND_REPO:latest $ECR_URI/$FRONTEND_REPO:latest
+        docker push $ECR_URI/$FRONTEND_REPO:latest
 
     - name: Build and Push Backend Image
       run: |
-        docker build -t $BACKEND_REPO:latest -f Backend-Dockerfile .
-        docker tag $BACKEND_REPO:latest $ECR_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com/$BACKEND_REPO:latest
-        docker push $ECR_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com/$BACKEND_REPO:latest
+        docker build -t $BACKEND_REPO:latest -f ppp-backend/Backend-Dockerfile ppp-backend
+        docker tag $BACKEND_REPO:latest $ECR_URI/$BACKEND_REPO:latest
+        docker push $ECR_URI/$BACKEND_REPO:latest
 
-    - name: Deploy Frontend
+    - name: Deploy Frontend with Copilot
       run: |
-        copilot deploy --name frontend --env prod
+        copilot deploy --name frontend --env $COPILOT_ENV
 
-    - name: Deploy Backend
+    - name: Deploy Backend with Copilot
       run: |
-        copilot deploy --name backend --env prod
+        copilot deploy --name backend --env $COPILOT_ENV
