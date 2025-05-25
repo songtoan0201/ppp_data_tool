@@ -48,7 +48,7 @@ jobs:
 
     - name: Build and Push Backend Image
       run: |
-        docker build -t $BACKEND_REPO:latest -f ppp-backend/Backend-Dockerfile ppp-backend
+        docker build -t $BACKEND_REPO:latest -f Backend-Dockerfile .
         docker tag $BACKEND_REPO:latest $ECR_URI/$BACKEND_REPO:latest
         docker push $ECR_URI/$BACKEND_REPO:latest
 
