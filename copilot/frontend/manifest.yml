@@ -10,7 +10,7 @@ type: Load Balanced Web Service
 http:
   # Requests to this path will be forwarded to your service.
   # To match all requests you can use the "/" path.
-  path: '/'
+  path: '/home'
   # You can specify a custom health check path. The default is "/".
   # healthcheck: '/'
 
@@ -47,7 +47,7 @@ network:
 #    count: 2               # Number of tasks to run for the "test" environment.
 #    deployment:            # The deployment strategy for the "test" environment.
 #       rolling: 'recreate' # Stops existing tasks before new ones are started for faster deployments.
-environment:
-  variables:
-    BACKEND_URL: http://backend.prod.ppp-data-tool.local:8000
-    VITE_API_URL: http://backend.prod.ppp-data-tool.local:8000
+environments:
+  dev:
+    variables:
+      VITE_API_URL: http://ppp-da-Publi-Iq4ngL079AYc-128295983.us-west-1.elb.amazonaws.com/

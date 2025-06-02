@@ -26,6 +26,9 @@ app.include_router(router)
 async def root():
     return {"message": "Welcome to the PPP Data Tool API!"}
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 @app.on_event("startup")
 def startup_event():

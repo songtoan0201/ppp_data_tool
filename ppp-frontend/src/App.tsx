@@ -29,7 +29,7 @@ const App: React.FC = () => {
       {/* Logo left, title centered */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
         <img
-          src="/logo.png"
+          src="/home/logo.png"
           alt="PPP Data Tool Logo"
           style={{ height: 112, width: 112, objectFit: 'contain', flexShrink: 0 }}
         />
